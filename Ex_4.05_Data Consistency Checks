@@ -1,0 +1,50 @@
+Exercise 4.05 - Data Consistency Checks
+
+# Import libraries
+import pandas as pd
+import numpy as np
+import os
+
+# create path
+    path='/home/haus/Exercise_4_Instacart_Basket_Analysis/02_Data'
+# Import orders data
+    df_ords = pd.read_csv(r'/home/haus/Exercise_4_Instacart_Basket_Analysis/02_Data/Prepared_Data/orders_wrangled_task4_04.csv', index_col = False)
+# Import products data
+    df_prods = pd.read_csv(r'/home/haus/Exercise_4_Instacart_Basket_Analysis/02_Data/Original_Data/products.csv', index_col = False)
+
+
+#Createa a data-frame
+df_test=pd.DataFrame()
+
+#Create a mixed type column
+df_test['mix']=['a', 'b', 1, True]
+
+df_test.head()
+
+***The function for checking whether a data-frame contains any mixed-type columns***
+
+for col in df_test.columns.tolist():
+  weird = (df_test[[col]].map(type) != df_test[[col]].iloc[0].apply(type)).any(axis = 1)
+  if len (df_test[weird]) > 0:
+    print (col)
+    
+***Additional functions for checking whether a data-frame contains any mixed-type columns***
+
+for col in df_test.columns.tolist():
+    # Remove .any() to preserve the boolean Series
+    weird = (df_test[col].map(type) != type(df_test[col].iloc[0]))  # <- No .any()
+    if weird.any():  # Check if ANY True exists in the Series
+        print(col)
+
+Or
+
+for col in df_test.columns.tolist():
+    weird = (df_test[col].map(type) != type(df_test[col].iloc[0]))
+    if weird.any():
+        print(col)
+
+# Convert a column’s data type from numeric to string:
+df_test['mix'] = df_test['mix'].astype('str')
+
+# Convert a column’s data type from string to numeric:
+df_test['mix'] = df_test['mix'].astype('int64')
