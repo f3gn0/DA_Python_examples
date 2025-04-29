@@ -1,2 +1,1 @@
-# DA_Python
-Python code from Data Analytic course
+# DA_Python_Examples (code from Data Analytic course)
